@@ -318,19 +318,28 @@ div.dc-chart {
 
 /* mods */
 
-#button_bar {    
-    position: fixed;
+#question {
+    position: absolute;
     top: 0px;    
     width: 100%;
     text-align: center;
     margin: 0 auto;
-    padding-top: 20px;    
+    padding: 15px 15px;
+}
+
+#button_bar {    
+    position: absolute;
+    top: 60px;    
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    padding-bottom: 15px;    
 }
 
 #charts {   
-    position: fixed; 
+    position: absolute;
     width: 100%;    
-    top: 60px;
+    top: 100px;
     text-align: center;
     margin: 0 auto;
 }
@@ -339,5 +348,5 @@ div.dc-chart {
     float: left;
     width: 33.3%;
     text-align: center;
+    margin: 0 auto;    
 }
-
