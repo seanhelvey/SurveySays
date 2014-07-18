@@ -315,3 +315,29 @@ div.dc-chart {
     pointer-events: all;
     cursor: pointer;
 }
+
+/* mods */
+
+#button_bar {    
+    position: fixed;
+    top: 0px;    
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    padding-top: 20px;    
+}
+
+#charts {   
+    position: fixed; 
+    width: 100%;    
+    top: 60px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.column {
+    float: left;
+    width: 33.3%;
+    text-align: center;
+}
+

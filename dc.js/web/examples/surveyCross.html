@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>dc.js - Number Display Example</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../css/dc.css"/>
+</head>
+<body>
+
+<nav id="button_bar">
+<button onclick="load_button('1')">1</button>
+<button onclick="load_button('2')">2</button>
+<button onclick="load_button('3')">3</button>
+<button onclick="load_button('4')">4</button>
+<button onclick="load_button('5')">5</button>
+<button onclick="load_button('6')">6</button>
+<button onclick="load_button('7')">7</button>
+<button onclick="load_button('8')">8</button>
+<button onclick="load_button('9')">9</button>
+<button onclick="load_button('10')">10</button>
+</nav>
+
+<section id="charts">
+<div id="role-stability-row-chart" class="column"></div>
+<div id="barriers-hist-chart" class="column"></div>
+<div id="leadership-pie-chart" class="column"></div>
+</section>
+
+<script type="text/javascript" src="../js/d3.js"></script>
+<script type="text/javascript" src="../js/crossfilter.js"></script>
+<script type="text/javascript" src="../js/dc.js"></script>
+<script type="text/javascript">
+
+var barriersHistChart = dc.barChart("#barriers-hist-chart");
+var roleStabilityRowChart = dc.rowChart("#role-stability-row-chart");
+var leadershipPieChart = dc.pieChart("#leadership-pie-chart");
+var survey, roleDim, stabilityPerRole, barrierDim, barrierHist, leadershipDim, stabilityPerLeadership;
+var questionNumber = 0;
+
+run(1);
+
+function run(number) {
+
+    d3.csv("../../../56_v2.csv", function(error, surveyData) {
+
+        survey = crossfilter(surveyData);
+        roleDim  = survey.dimension(function(d) {return d.q11;});
+        stabilityPerRole = roleDim.group().reduceSum(function(d) {
+            avg = 0;
+            if (d.q11 == "Product / Design") {
+                avg = d['q' + number]/8;
+            } else if (d.q11 == "Technology / Engineering") {
+                avg = d['q' + number]/31;
+            } else if (d.q11 == "Marketing / Sales") {
+                avg = d['q' + number]/8;
+            } else if (d.q11 == "Delivery / Client Services") {
+                avg = d['q' + number]/4;
+            } else {
+                avg = d['q' + number]/5;
+            }
+            return avg;
+        });
+
+        barrierDim  = survey.dimension(function(d) {return d['q' + number];});
+        barrierHist = barrierDim.group().reduceCount();
+
+        leadershipDim  = survey.dimension(function(d) {return d.q12;});
+        stabilityPerLeadership = leadershipDim.group().reduceCount();
+
+        barriersHistChart
+            .width(300).height(200)
+            .dimension(barrierDim)
+            .group(barrierHist)
+            .x(d3.scale.linear().domain([1,5]))
+            .elasticY(true);
+
+        roleStabilityRowChart
+            .width(350).height(200)
+            .dimension(roleDim)
+            .group(stabilityPerRole)
+            .elasticX(true)
+            .x(d3.scale.linear().domain([-10,10]));
+
+        leadershipPieChart
+            .width(350).height(200).radius(80)
+            .dimension(leadershipDim)
+            .group(stabilityPerLeadership);
+
+        dc.renderAll();
+
+    });
+}
+
+function load_button(number) {
+    run(number);
+}
+
+</script>
+
+</body>
+</html>
