@@ -344,9 +344,24 @@ div.dc-chart {
     margin: 0 auto;
 }
 
+#charts2 {   
+    position: absolute;
+    width: 100%;    
+    top: 350px;
+    text-align: center;
+    margin: 0 auto;
+}
+
 .column {
     float: left;
     width: 33.3%;
+    text-align: center;
+    margin: 0 auto;    
+}
+
+.column2 {
+    float: left;
+    width: 50.0%;
     text-align: center;
     margin: 0 auto;    
 }

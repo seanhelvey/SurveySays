@@ -34,15 +34,26 @@
 </div>
 </section>
 
+<section id="charts2">
+<div id="emp-hist-chart" class="column2">
+    <h2>Average Score & Number of Employees</h2>    
+</div>
+<div id="team-hist-chart" class="column2">
+    <h2>Average Score & Size of Team</h2>    
+</div>
+</section>
+
 <script type="text/javascript" src="../js/d3.js"></script>
 <script type="text/javascript" src="../js/crossfilter.js"></script>
 <script type="text/javascript" src="../js/dc.js"></script>
-<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript">
 
 var barriersHistChart = dc.barChart("#barriers-hist-chart");
 var roleStabilityRowChart = dc.rowChart("#role-stability-row-chart");
 var leadershipPieChart = dc.pieChart("#leadership-pie-chart");
+var empBarChart = dc.barChart("#emp-hist-chart");
+var teamBarChart = dc.barChart("#team-hist-chart");
 
 var survey, roleDim, stabilityPerRole, barrierDim, barrierHist, leadershipDim, stabilityPerLeadership, questions;
 
@@ -66,7 +77,7 @@ load_button(1);
 
 function run(number, question) {
 
-    function normalize(d) {
+    function normalizeRole(d) {
         avg = 0;
         if (d.q11 == "Product / Design") {
             avg = d['q' + number]/8;
@@ -82,18 +93,56 @@ function run(number, question) {
         return avg;
     }
 
+    function normalizeEmp(d) {
+        avg = 0;
+        if (d.q13 == "5") {
+            avg = d['q' + number]/5;
+        } else if (d.q13 == "10") {
+            avg = d['q' + number]/11;
+        } else if (d.q13 == "20") {
+            avg = d['q' + number]/10;
+        } else if (d.q13 == "50") {
+            avg = d['q' + number]/10;
+        } else {
+            avg = d['q' + number]/20;
+        }
+        return avg;
+    }    
+
+    function normalizeTeam(d) {
+        avg = 0;
+        if (d.q14 == "0") {
+            avg = d['q' + number]/34;
+        } else if (d.q14 == "2") {
+            avg = d['q' + number]/12;
+        } else if (d.q14 == "5") {
+            avg = d['q' + number]/4;
+        } else if (d.q14 == "10") {
+            avg = d['q' + number]/3;
+        } else {
+            avg = d['q' + number]/3;
+        }
+        return avg;
+    }    
+
     $("#question").text(question);  
     d3.csv("../../../56_v3.csv", function(error, surveyData) {
 
         survey = crossfilter(surveyData);
         roleDim  = survey.dimension(function(d) {return d.q11;});
-        stabilityPerRole = roleDim.group().reduceSum(normalize);
+        stabilityPerRole = roleDim.group().reduceSum(normalizeRole);
 
         barrierDim  = survey.dimension(function(d) {return d['q' + number];});
         barrierHist = barrierDim.group().reduceCount();
 
         leadershipDim  = survey.dimension(function(d) {return d.q12;});
         stabilityPerLeadership = leadershipDim.group().reduceCount();
+
+        empDim  = survey.dimension(function(d) {return d.q13;});
+        empHist = empDim.group().reduceSum(normalizeEmp);
+
+        teamDim  = survey.dimension(function(d) {return d.q14;});
+        teamHist = teamDim.group().reduceSum(normalizeTeam);
 
         barriersHistChart
             .width(300).height(200)
@@ -114,6 +163,20 @@ function run(number, question) {
             .width(350).height(200).radius(80)
             .dimension(leadershipDim)
             .group(stabilityPerLeadership);
+
+        empBarChart
+            .width(300).height(200)
+            .dimension(empDim)
+            .group(empHist)
+            .x(d3.scale.linear().domain([1,201]))
+            .elasticY(true);
+
+        teamBarChart
+            .width(300).height(200)
+            .dimension(teamDim)
+            .group(teamHist)
+            .x(d3.scale.linear().domain([1,21]))
+            .elasticY(true);
 
         dc.renderAll();
 
