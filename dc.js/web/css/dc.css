@@ -339,7 +339,7 @@ div.dc-chart {
 #charts {   
     position: absolute;
     width: 100%;    
-    top: 100px;
+    top: 90px;
     text-align: center;
     margin: 0 auto;
 }
@@ -347,7 +347,7 @@ div.dc-chart {
 #charts2 {   
     position: absolute;
     width: 100%;    
-    top: 350px;
+    top: 340px;
     text-align: center;
     margin: 0 auto;
 }
@@ -364,4 +364,12 @@ div.dc-chart {
     width: 50.0%;
     text-align: center;
     margin: 0 auto;    
+}
+
+.centeredChart {
+    position: relative;
+    left: 33%;        
+    text-align: center;
+    margin: 0 auto;  
+    display: block;  
 }

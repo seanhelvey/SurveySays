@@ -148,7 +148,8 @@ function run(number, question) {
             .width(300).height(200)
             .dimension(barrierDim)
             .group(barrierHist)
-            .x(d3.scale.linear().domain([1,5]))
+            .x(d3.scale.linear().domain([.5,4.5]))
+            .xUnits(function(){return 15;})            
             .elasticY(true);
 
         roleStabilityRowChart
@@ -168,8 +169,9 @@ function run(number, question) {
             .width(300).height(200)
             .dimension(empDim)
             .group(empHist)
-            .x(d3.scale.linear().domain([1,201]))
-            .y(d3.scale.linear().domain([1,4]))            
+            .x(d3.scale.linear().domain([1,211]))
+            .y(d3.scale.linear().domain([1,4]))  
+            .xUnits(function(){return 40;})                                         
             .elasticY(false);
 
         teamBarChart

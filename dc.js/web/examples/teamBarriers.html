@@ -9,37 +9,9 @@
 
 <h2 id="question"></h2>
 
-<nav id="button_bar">
-<button onclick="load_button('1')">1</button>
-<button onclick="load_button('2')">2</button>
-<button onclick="load_button('3')">3</button>
-<button onclick="load_button('4')">4</button>
-<button onclick="load_button('5')">5</button>
-<button onclick="load_button('6')">6</button>
-<button onclick="load_button('7')">7</button>
-<button onclick="load_button('8')">8</button>
-<button onclick="load_button('9')">9</button>
-<button onclick="load_button('10')">10</button>
-</nav>
-
 <section id="charts">
-<div id="barriers-hist-chart" class="column">
-    <h3>Question Score Histogram</h3>    
-</div>
-<div id="role-stability-row-chart" class="column">
-    <h3>Average Question Score Per Role</h3>
-</div>
-<div id="leadership-pie-chart" class="column">
-    <h3>Leadership Team Status</h3>        
-</div>
-</section>
-
-<section id="charts2">
-<div id="emp-hist-chart" class="column2">
+<div id="emp-hist-chart" class="centeredChart">
     <h3>Average Score & Number of Employees</h3>    
-</div>
-<div id="team-hist-chart" class="column2">
-    <h3>Average Score & Number of Direct Reports</h3>    
 </div>
 </section>
 
@@ -73,7 +45,7 @@ var questions = { 1: "Are you proud of the work that you are doing within your o
         13: "How many people work at your company?",
         14: "How many employees do you manage directly?" };
 
-load_button(1);
+load_button(6);
 
 function run(number, question) {
 
@@ -148,7 +120,7 @@ function run(number, question) {
             .width(300).height(200)
             .dimension(barrierDim)
             .group(barrierHist)
-            .x(d3.scale.linear().domain([1,5]))
+            .x(d3.scale.linear().domain([.5,4.5]))
             .elasticY(true);
 
         roleStabilityRowChart
@@ -168,8 +140,9 @@ function run(number, question) {
             .width(300).height(200)
             .dimension(empDim)
             .group(empHist)
-            .x(d3.scale.linear().domain([1,201]))
-            .y(d3.scale.linear().domain([1,4]))            
+            .x(d3.scale.linear().domain([1,211]))
+            .y(d3.scale.linear().domain([1,4]))   
+            .xUnits(function(){return 40;})                                        
             .elasticY(false);
 
         teamBarChart
