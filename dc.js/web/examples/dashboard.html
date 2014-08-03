@@ -170,7 +170,7 @@ function run(number, question) {
             .dimension(empDim)
             .group(empHist)
             .x(d3.scale.linear().domain([1,211]))
-            .y(d3.scale.linear().domain([1,4]))  
+            .y(d3.scale.linear().domain([0,4]))  
             .xUnits(function(){return 40;})                                         
             .elasticY(false);
 
@@ -179,7 +179,7 @@ function run(number, question) {
             .dimension(teamDim)
             .group(teamHist)
             .x(d3.scale.linear().domain([1,21]))
-            .y(d3.scale.linear().domain([1,4]))                        
+            .y(d3.scale.linear().domain([0,4]))                        
             .elasticY(false);
 
         dc.renderAll();
